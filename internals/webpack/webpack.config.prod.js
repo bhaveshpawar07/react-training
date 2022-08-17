@@ -5,7 +5,8 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const OfflinePlugin = require('@lcdp/offline-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const { isProd, isUAT, getBasePublicPath } = require('../utils');
+// const { isProd, isUAT, getBasePublicPath } = require('../utils');
+const { getBasePublicPath } = require('../utils');
 
 const publicPath = getBasePublicPath();
 
@@ -81,7 +82,7 @@ module.exports = require('./webpack.config.base')({
     // Put it in the end to capture all the HtmlWebpackPlugin's
     // assets manipulations and do leak its manipulations to HtmlWebpackPlugin
     new OfflinePlugin({
-      relativePaths: isProd() || isUAT(),
+      relativePaths: false,
       publicPath,
       appShell: '/',
 
