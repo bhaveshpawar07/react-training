@@ -8,15 +8,39 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-
+import styled from 'styled-components';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { Card, Input, Button } from 'antd';
 import { injectSaga } from 'redux-injectors';
 import { selectUserdata } from './selectors';
 import saga from './saga';
 import { formCreators } from './reducer';
 
-export function Form({ dispatchAddUserData, somePayLoad }) {
+const CustomCard = styled(Card)`
+  && {
+    margin: 20px 0;
+    max-width: ${(props) => props.maxwidth};
+    color: ${(props) => props.color};
+    ${(props) => props.color && `color: ${props.color}`};
+  }
+`;
+
+const Container = styled.div`
+  && {
+    display: flex;
+    flex-direction: column;
+    max-width: ${(props) => props.maxwidth}px;
+    width: 100%;
+    margin: 0 auto;
+    padding: ${(props) => props.padding}px;
+  }
+`;
+
+export function Form({ dispatchAddUserData, dispatchRemoveUser, dispatchEditUserData, somePayLoad }) {
+  const [edit, setEdit] = useState(false);
+  const [index, setIndex] = useState('');
+
   const [inputField, setInputField] = useState({
     name: '',
     mobile: '',
@@ -53,7 +77,36 @@ export function Form({ dispatchAddUserData, somePayLoad }) {
   };
   const onSubmit = () => {
     dispatchAddUserData(inputField);
+    setInputField((prevState) => ({
+      ...prevState,
+      name: '',
+      email: '',
+      mobile: ''
+    }));
     // alert(JSON.stringify(inputField));
+  };
+
+  const onEdit = () => {
+    dispatchEditUserData(inputField, index);
+    setInputField((prevState) => ({
+      ...prevState,
+      name: '',
+      email: '',
+      mobile: ''
+    }));
+    setEdit(false);
+    // alert(JSON.stringify(inputField));
+  };
+
+  const editUser = (user, index) => {
+    setEdit(true);
+    setIndex(index);
+    setInputField((prevState) => ({
+      ...prevState,
+      name: user.name,
+      email: user.email,
+      mobile: user.mobile
+    }));
   };
 
   const renderUsers = () => {
@@ -64,39 +117,53 @@ export function Form({ dispatchAddUserData, somePayLoad }) {
           <p>
             {user.mobile},{user.email}
           </p>
+          <p onClick={() => editUser(user, index)}>Edit</p>
+          <p onClick={() => dispatchRemoveUser(index)}>Delete</p>
         </div>
       );
     });
   };
 
   return (
-    <div>
-      {/* <T id={'Form'} /> */}
-      <form>
-        <label>
-          Name
-          <input type="text" name="name" onChange={onChangeName} />
-        </label>
-        <label>
-          Mobile
-          <input type="number" name="mobile" onChange={onChangeMobile} />
-        </label>
-        <label>
-          Email
-          <input type="email" name="email " onChange={onChangeEmail} />
-        </label>
-        <input type="submit" name="Submit" onClick={onSubmit} />
-      </form>
-      <hr />
-      <h1>Registered Users</h1>
-      {renderUsers()}
-    </div>
+    <Container maxwidth="500" padding="10">
+      <CustomCard title="Add user">
+        <Input onChange={onChangeName} value={inputField.name} placeholder="Enter Name" />
+        <br />
+        <br />
+        <Input type="number" onChange={onChangeMobile} value={inputField.mobile} placeholder="Enter Mobile" />
+        <br />
+        <br />
+        <Input onChange={onChangeEmail} value={inputField.email} placeholder="Enter Email" />
+        <br />
+        <br />
+        {!edit && (
+          <Button type="primary" onClick={() => onSubmit()}>
+            Submit
+          </Button>
+        )}
+        {edit && (
+          <Button type="primary" onClick={() => onEdit()}>
+            Edit
+          </Button>
+        )}
+        &nbsp;
+        {edit && (
+          <Button danger onClick={() => setEdit(false)}>
+            Discard
+          </Button>
+        )}
+      </CustomCard>
+      <br />
+      <CustomCard title="Registered Users">{renderUsers()}</CustomCard>
+    </Container>
   );
 }
 
 Form.propTypes = {
   somePayLoad: PropTypes.any,
-  dispatchAddUserData: PropTypes.func
+  dispatchAddUserData: PropTypes.func,
+  dispatchRemoveUser: PropTypes.func,
+  dispatchEditUserData: PropTypes.func
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -104,9 +171,11 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
-  const { addUserData } = formCreators;
+  const { addUserData, removeUser, editUser } = formCreators;
   return {
-    dispatchAddUserData: (userData) => dispatch(addUserData(userData))
+    dispatchAddUserData: (userData) => dispatch(addUserData(userData)),
+    dispatchRemoveUser: (userKey) => dispatch(removeUser(userKey)),
+    dispatchEditUserData: (editUserData, index) => dispatch(editUser(editUserData, index))
   };
 }
 
