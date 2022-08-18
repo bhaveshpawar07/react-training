@@ -9,7 +9,7 @@ import { createActions } from 'reduxsauce';
 export const initialState = { tuneName: null, tuneData: {}, tuneError: null };
 
 export const { Types: iTunesTypes, Creators: iTunesCreators } = createActions({
-  getItunesData: ['tuneName']
+  defaultAction: ['tuneName']
 });
 
 export const iTunesReducer = (state = initialState, action) =>
