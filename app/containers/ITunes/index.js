@@ -11,28 +11,67 @@ import { injectIntl, FormattedMessage as T } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
-import { selectSomePayLoad } from './selectors';
+import { Card, Input } from 'antd';
+import { selectITunesData, selectITunesError, selectITunesName } from './selectors';
 import saga from './saga';
+import styled from 'styled-components';
+import { iTunesCreators } from './reducer';
 
-export function ITunes() {
+const { Search } = Input;
+const CustomCard = styled(Card)`
+  && {
+    margin: 20px 0;
+    max-width: ${(props) => props.maxwidth};
+    color: ${(props) => props.color};
+    ${(props) => props.color && `color: ${props.color}`};
+  }
+`;
+
+const Container = styled.div`
+  && {
+    display: flex;
+    flex-direction: column;
+    max-width: ${(props) => props.maxwidth}px;
+    width: 100%;
+    margin: 0 auto;
+    padding: ${(props) => props.padding}px;
+  }
+`;
+
+export function ITunes({ dispatchGetItunesData }) {
+  const handleOnChange = (name) => {
+    dispatchGetItunesData(name);
+  };
+
   return (
-    <div>
-      <T id={'ITunes'} />
-    </div>
+    <Container maxwidth="500" padding="10">
+      <CustomCard title="Album Search">
+        <T marginBottom={20} id="Search for any album" />
+        <Search
+          type="text"
+          onChange={(e) => handleOnChange(e.target.value)}
+          onSearch={(searchText) => handleOnChange(searchText)}
+        />
+      </CustomCard>
+    </Container>
   );
 }
 
 ITunes.propTypes = {
-  somePayLoad: PropTypes.any
+  dispatchGetItunesData: PropTypes.func
 };
 
 const mapStateToProps = createStructuredSelector({
-  somePayLoad: selectSomePayLoad()
+  iTunesData: selectITunesData(),
+  iTunesName: selectITunesName(),
+  iTunesError: selectITunesError()
 });
 
 function mapDispatchToProps(dispatch) {
+  const { requestGetItunesData, clearItunesData } = iTunesCreators;
   return {
-    dispatch
+    dispatchGetItunesData: (name) => dispatch(requestGetItunesData(name)),
+    dispatchClearItunesData: () => dispatch(clearItunesData())
   };
 }
 
