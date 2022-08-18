@@ -20,8 +20,6 @@ export const iTunesReducer = (state = initialState, action) =>
   produce(state, (draft) => {
     switch (action.type) {
       case iTunesTypes.REQUEST_GET_ITUNES_DATA:
-        // eslint-disable-next-line no-console
-        console.log('Dispatcher called for ', action.tuneName);
         draft.tuneName = action.tuneName;
         break;
       case iTunesTypes.SUCCESS_GET_ITUNES_DATA:

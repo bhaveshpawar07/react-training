@@ -1,3 +1,4 @@
+import { get } from 'lodash';
 import { createSelector } from 'reselect';
 import { initialState } from './reducer';
 
@@ -7,6 +8,8 @@ import { initialState } from './reducer';
 
 const selectITunesDomain = (state) => state.iTunes || initialState;
 
-export const selectITunes = () => createSelector(selectITunesDomain, (substate) => substate);
+export const selectITunesData = () => createSelector(selectITunesDomain, (substate) => get(substate, 'tuneData'));
 
-export const selectSomePayLoad = () => createSelector(selectITunesDomain, (substate) => substate.somePayLoad);
+export const selectITunesError = () => createSelector(selectITunesDomain, (substate) => get(substate, 'tuneError'));
+
+export const selectITunesName = () => createSelector(selectITunesDomain, (substate) => get(substate, 'tuneName'));

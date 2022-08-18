@@ -16,6 +16,7 @@ import { selectITunesData, selectITunesError, selectITunesName } from './selecto
 import saga from './saga';
 import styled from 'styled-components';
 import { iTunesCreators } from './reducer';
+import { debounce, isEmpty } from 'lodash';
 
 const { Search } = Input;
 const CustomCard = styled(Card)`
@@ -38,19 +39,23 @@ const Container = styled.div`
   }
 `;
 
-export function ITunes({ dispatchGetItunesData }) {
+export function ITunes({ dispatchGetItunesData, iTunesData, dispatchClearItunesData }) {
   const handleOnChange = (name) => {
-    dispatchGetItunesData(name);
+    if (!isEmpty(name)) {
+      dispatchGetItunesData(name);
+    } else {
+      dispatchClearItunesData();
+    }
   };
-
+  const debouncedHandleOnChange = debounce(handleOnChange, 200);
   return (
     <Container maxwidth="500" padding="10">
       <CustomCard title="Album Search">
         <T marginBottom={20} id="Search for any album" />
         <Search
           type="text"
-          onChange={(e) => handleOnChange(e.target.value)}
-          onSearch={(searchText) => handleOnChange(searchText)}
+          onChange={(e) => debouncedHandleOnChange(e.target.value)}
+          onSearch={(searchText) => debouncedHandleOnChange(searchText)}
         />
       </CustomCard>
     </Container>
@@ -58,7 +63,9 @@ export function ITunes({ dispatchGetItunesData }) {
 }
 
 ITunes.propTypes = {
-  dispatchGetItunesData: PropTypes.func
+  dispatchGetItunesData: PropTypes.func,
+  iTunesData: PropTypes.any,
+  dispatchClearItunesData: PropTypes.func
 };
 
 const mapStateToProps = createStructuredSelector({
