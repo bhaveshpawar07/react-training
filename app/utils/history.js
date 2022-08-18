@@ -13,5 +13,5 @@ export function getBaseName() {
   return '';
 }
 
-const history = createBrowserHistory();
+const history = createBrowserHistory({ basename: getBaseName() });
 export default history;
