@@ -12,7 +12,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
 import { Card, Input } from 'antd';
-import { selectITunesData, selectITunesError, selectITunesName } from './selectors';
+import { selectSomePayLoad } from './selectors';
 import saga from './saga';
 import styled from 'styled-components';
 import { iTunesCreators } from './reducer';
@@ -62,9 +62,7 @@ ITunes.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  iTunesData: selectITunesData(),
-  iTunesName: selectITunesName(),
-  iTunesError: selectITunesError()
+  somePayLoad: selectSomePayLoad()
 });
 
 function mapDispatchToProps(dispatch) {
