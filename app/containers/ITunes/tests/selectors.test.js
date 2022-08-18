@@ -1,19 +1,43 @@
-import { selectITunes, selectSomePayLoad } from '../selectors';
+import { initialState } from '../reducer';
+import { selectITunesDomain, selectITunesName, selectITunesData, selectITunesError } from '../selectors';
 
 describe('ITunes selector tests', () => {
-  const mockedState = {
-    iTunes: {
-      somePayLoad: 'W.S'
-    }
-  };
+  let mockedState;
+  let tuneData;
+  let tuneName;
+  let tuneError;
 
-  it('should select the iTunes state', () => {
-    const iTunesSelector = selectITunes();
-    expect(iTunesSelector(mockedState)).toEqual(mockedState.iTunes);
+  beforeEach(() => {
+    tuneName = 'test';
+    tuneData = { resultCount: 1, results: [{ tuneName }] };
+    tuneError = 'There was some error while fetching the album details';
+
+    mockedState = {
+      iTunes: {
+        tuneName,
+        tuneData,
+        tuneError
+      }
+    };
   });
 
-  it('should select the somePayLoad state', () => {
-    const somePayLoadSelector = selectSomePayLoad();
-    expect(somePayLoadSelector(mockedState)).toEqual(mockedState.iTunes.somePayLoad);
+  it('should select the global state', () => {
+    const selector = selectITunesDomain(initialState);
+    expect(selector).toEqual(initialState);
+  });
+
+  it('should select the iTunesName', () => {
+    const nameSelector = selectITunesName();
+    expect(nameSelector(mockedState)).toEqual(tuneName);
+  });
+
+  it('should select the iTunesData', () => {
+    const nameSelector = selectITunesData();
+    expect(nameSelector(mockedState)).toEqual(tuneData);
+  });
+
+  it('should select the iTunesError', () => {
+    const nameSelector = selectITunesError();
+    expect(nameSelector(mockedState)).toEqual(tuneError);
   });
 });

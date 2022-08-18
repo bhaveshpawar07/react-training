@@ -6,11 +6,11 @@ describe('ITunes reducer tests', () => {
   });
 
   it('should return the updated state when an action of type DEFAULT is dispatched', () => {
-    const expectedResult = { ...initialState, somePayLoad: 'Mohammed Ali Chherawalla' };
+    const expectedResult = { ...initialState, tuneName: 'test' };
     expect(
       iTunesReducer(initialState, {
-        type: iTunesTypes.DEFAULT_ACTION,
-        somePayLoad: 'Mohammed Ali Chherawalla'
+        type: iTunesTypes.REQUEST_GET_ITUNES_DATA,
+        tuneName: 'test'
       })
     ).toEqual(expectedResult);
   });

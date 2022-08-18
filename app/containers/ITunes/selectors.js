@@ -6,7 +6,7 @@ import { initialState } from './reducer';
  * Direct selector to the iTunes state domain
  */
 
-const selectITunesDomain = (state) => state.iTunes || initialState;
+export const selectITunesDomain = (state) => state.iTunes || initialState;
 
 export const selectITunesData = () => createSelector(selectITunesDomain, (substate) => get(substate, 'tuneData'));
 
