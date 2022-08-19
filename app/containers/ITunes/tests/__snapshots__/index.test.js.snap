@@ -7,7 +7,7 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
       class="ITunes__Container-fbwjmv-1 iecZPe"
     >
       <div
-        class="ant-card ant-card-bordered ITunes__CustomCard-fbwjmv-0 fyowMd"
+        class="ant-card ant-card-bordered ITunes__CustomCard-fbwjmv-0 TKWGJ"
       >
         <div
           class="ant-card-head"
@@ -34,6 +34,7 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
             >
               <input
                 class="ant-input"
+                data-testid="search-bar"
                 type="text"
                 value=""
               />

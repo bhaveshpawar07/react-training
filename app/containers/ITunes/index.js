@@ -24,7 +24,6 @@ const CustomCard = styled(Card)`
     margin: 20px 0;
     max-width: ${(props) => props.maxwidth};
     color: ${(props) => props.color};
-    ${(props) => props.color && `color: ${props.color}`};
   }
 `;
 
@@ -39,7 +38,7 @@ const Container = styled.div`
   }
 `;
 
-export function ITunes({ dispatchGetItunesData, iTunesData, dispatchClearItunesData }) {
+export function ITunes({ dispatchGetItunesData, dispatchClearItunesData }) {
   const handleOnChange = (name) => {
     if (!isEmpty(name)) {
       dispatchGetItunesData(name);
@@ -54,6 +53,7 @@ export function ITunes({ dispatchGetItunesData, iTunesData, dispatchClearItunesD
         <T marginBottom={20} id="Search for any album" />
         <Search
           type="text"
+          data-testid="search-bar"
           onChange={(e) => debouncedHandleOnChange(e.target.value)}
           onSearch={(searchText) => debouncedHandleOnChange(searchText)}
         />
@@ -74,7 +74,7 @@ const mapStateToProps = createStructuredSelector({
   iTunesError: selectITunesError()
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   const { requestGetItunesData, clearItunesData } = iTunesCreators;
   return {
     dispatchGetItunesData: (name) => dispatch(requestGetItunesData(name)),

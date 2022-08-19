@@ -35,4 +35,13 @@ describe('ITunes reducer tests', () => {
       })
     ).toEqual(expectedResult);
   });
+
+  it('should return the initial state when an action of type CLEAR_ITUNES_DATA is dispatched', () => {
+    const expectedResult = { ...initialState, tuneName: null, tuneData: {}, tuneError: null };
+    expect(
+      iTunesReducer(initialState, {
+        type: iTunesTypes.CLEAR_ITUNES_DATA
+      })
+    ).toEqual(expectedResult);
+  });
 });

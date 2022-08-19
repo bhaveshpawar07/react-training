@@ -28,6 +28,11 @@ export const iTunesReducer = (state = initialState, action) =>
       case iTunesTypes.FAILURE_GET_ITUNES_DATA:
         draft.tuneError = get(action.tuneError, 'message', 'something_went_wrong');
         break;
+      case iTunesTypes.CLEAR_ITUNES_DATA:
+        draft.tuneName = null;
+        draft.tuneData = {};
+        draft.tuneError = null;
+        break;
       default:
     }
   });
