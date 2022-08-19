@@ -1,4 +1,4 @@
-/**
+/*
  *
  * ITunes Container
  *
@@ -12,10 +12,11 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
 import { Card, Input } from 'antd';
-import { selectSomePayLoad } from './selectors';
+import { selectITunesData, selectITunesError, selectITunesName } from './selectors';
 import saga from './saga';
 import styled from 'styled-components';
 import { iTunesCreators } from './reducer';
+import { debounce, isEmpty } from 'lodash';
 
 const { Search } = Input;
 const CustomCard = styled(Card)`
@@ -23,7 +24,6 @@ const CustomCard = styled(Card)`
     margin: 20px 0;
     max-width: ${(props) => props.maxwidth};
     color: ${(props) => props.color};
-    ${(props) => props.color && `color: ${props.color}`};
   }
 `;
 
@@ -38,19 +38,24 @@ const Container = styled.div`
   }
 `;
 
-export function ITunes({ dispatchGetItunesData }) {
+export function ITunes({ dispatchGetItunesData, dispatchClearItunesData }) {
   const handleOnChange = (name) => {
-    dispatchGetItunesData(name);
+    if (!isEmpty(name)) {
+      dispatchGetItunesData(name);
+    } else {
+      dispatchClearItunesData();
+    }
   };
-
+  const debouncedHandleOnChange = debounce(handleOnChange, 200);
   return (
     <Container maxwidth="500" padding="10">
       <CustomCard title="Album Search">
         <T marginBottom={20} id="Search for any album" />
         <Search
           type="text"
-          onChange={(e) => handleOnChange(e.target.value)}
-          onSearch={(searchText) => handleOnChange(searchText)}
+          data-testid="search-bar"
+          onChange={(e) => debouncedHandleOnChange(e.target.value)}
+          onSearch={(searchText) => debouncedHandleOnChange(searchText)}
         />
       </CustomCard>
     </Container>
@@ -58,14 +63,18 @@ export function ITunes({ dispatchGetItunesData }) {
 }
 
 ITunes.propTypes = {
-  dispatchGetItunesData: PropTypes.func
+  dispatchGetItunesData: PropTypes.func,
+  iTunesData: PropTypes.any,
+  dispatchClearItunesData: PropTypes.func
 };
 
 const mapStateToProps = createStructuredSelector({
-  somePayLoad: selectSomePayLoad()
+  iTunesData: selectITunesData(),
+  iTunesName: selectITunesName(),
+  iTunesError: selectITunesError()
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   const { requestGetItunesData, clearItunesData } = iTunesCreators;
   return {
     dispatchGetItunesData: (name) => dispatch(requestGetItunesData(name)),
