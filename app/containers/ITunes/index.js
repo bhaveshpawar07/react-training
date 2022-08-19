@@ -1,4 +1,4 @@
-/**
+/*
  *
  * ITunes Container
  *
