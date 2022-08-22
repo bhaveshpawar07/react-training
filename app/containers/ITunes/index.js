@@ -68,10 +68,9 @@ const trackNameStyle = {
 };
 
 const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistName }) => {
-  const imageUrl = artworkUrl100;
   return (
     <Col style={divStyle} span={6}>
-      <img src={imageUrl} style={imgStyle} />
+      <img src={artworkUrl100} style={imgStyle} />
       <div style={detailsStyle}>
         <MyT text={trackName} style={{ ...trackNameStyle, ...pStyle }} />
         <If condition={trackExplicitness == 'explicit'}>
@@ -117,8 +116,8 @@ export function ITunes({ intl, dispatchGetItunesData, dispatchClearItunesData, i
     return (
       <If condition={!isEmpty(items) || loading}>
         <Skeleton loading={loading} active>
-          <Row gutter={[16, 16]}>
-            <For of={iTunesData.results} noParent renderItem={(item, index) => <AlbumCard key={index} {...item} />} />
+          <Row gutter={[16, 16]} data-testid="dataRow">
+            <For of={items} noParent renderItem={(item, index) => <AlbumCard key={index} {...item} />} />
           </Row>
         </Skeleton>
       </If>

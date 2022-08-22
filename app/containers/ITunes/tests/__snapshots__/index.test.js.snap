@@ -4,7 +4,7 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
 <body>
   <div>
     <div
-      class="ITunes__Container-fbwjmv-1 iecZPe"
+      class="ITunes__Container-fbwjmv-1 gHdSWk"
     >
       <div
         class="ant-card ant-card-bordered ITunes__CustomCard-fbwjmv-0 TKWGJ"
@@ -18,7 +18,7 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
             <div
               class="ant-card-head-title"
             >
-              Album Search
+              iTunes Album Search
             </div>
           </div>
         </div>

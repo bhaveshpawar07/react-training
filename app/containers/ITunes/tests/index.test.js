@@ -74,6 +74,13 @@ describe('<ITunes /> container tests', () => {
     await timeout(500);
     expect(getItunesDataSpy).toBeCalledWith(tuneName);
   });
+  it('should  dispatchGetItunesData on update on mount if iTunesName is already persisted', async () => {
+    const iTunesName = 'test';
+    renderProvider(<ITunes iTunesName={iTunesName} iTunesData={null} dispatchGetItunesData={submitSpy} />);
+
+    await timeout(500);
+    expect(submitSpy).toBeCalledWith(iTunesName);
+  });
   it('should validate mapDispatchToProps actions', async () => {
     const dispatchItunesSearchSpy = jest.fn();
     const tuneName = 'test';
@@ -89,5 +96,17 @@ describe('<ITunes /> container tests', () => {
     await timeout(500);
     props.dispatchClearItunesData();
     expect(dispatchItunesSearchSpy).toHaveBeenCalledWith(actions.dispatchClearItunesData);
+  });
+  it('should render data, when data is present', async () => {
+    const iTunesData = { results: [{ name: 'test' }] };
+    const { getByTestId } = renderProvider(<ITunes iTunesData={iTunesData} dispatchGetItunesData={submitSpy} />);
+    expect(getByTestId('dataRow')).toBeInTheDocument();
+  });
+  it('should render Skeleton when loading is true', async () => {
+    const iTunesName = 'test';
+    const { getByTestId, baseElement } = renderProvider(<ITunes dispatchGetItunesData={submitSpy} />);
+    fireEvent.change(getByTestId('search-bar'), { target: { value: iTunesName } });
+    await timeout(500);
+    expect(baseElement.getElementsByClassName('ant-skeleton').length).toBe(1);
   });
 });
