@@ -11,7 +11,7 @@ import { injectIntl, FormattedMessage as T } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
-import { Card, Input, Col, Row, Skeleton } from 'antd';
+import { Card, Input, Row, Skeleton } from 'antd';
 import { selectITunesData, selectITunesError, selectITunesName } from './selectors';
 import saga from './saga';
 import styled from 'styled-components';
@@ -19,7 +19,7 @@ import { iTunesCreators } from './reducer';
 import { debounce, isEmpty, get } from 'lodash';
 import If from '@components/If';
 import For from '@components/For';
-import { T as MyT } from '@components/T';
+import { AlbumCard } from './components/AlbumCard';
 
 const { Search } = Input;
 const CustomCard = styled(Card)`
@@ -40,50 +40,6 @@ const Container = styled.div`
     padding: ${(props) => props.padding}px;
   }
 `;
-
-const divStyle = {
-  width: '150px',
-  display: 'flex',
-  flexDirection: 'column'
-};
-const pStyle = {
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden'
-};
-const imgStyle = {
-  borderRadius: '15px'
-};
-const detailsStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginTop: '10px '
-};
-const artistNameStyle = {
-  fontSize: '10px'
-};
-const trackNameStyle = {
-  fontWeight: 'bold'
-};
-
-const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistName }) => {
-  return (
-    <Col style={divStyle} span={6}>
-      <img src={artworkUrl100} style={imgStyle} />
-      <div style={detailsStyle}>
-        <MyT text={trackName} style={{ ...trackNameStyle, ...pStyle }} />
-        <If condition={trackExplicitness == 'explicit'}>
-          <img
-            src="https://cdn-icons.flaticon.com/png/512/3097/premium/3097003.png?token=exp=1661161542~hmac=99d22989a8dc8287886e84079bddb458"
-            width="15px"
-          />
-        </If>
-      </div>
-      <MyT text={artistName} style={{ ...artistNameStyle, ...pStyle }} />
-    </Col>
-  );
-};
 
 export function ITunes({ intl, dispatchGetItunesData, dispatchClearItunesData, iTunesData, iTunesName }) {
   const [loading, setLoading] = useState(false);
@@ -146,13 +102,6 @@ ITunes.propTypes = {
   iTunesData: PropTypes.any,
   dispatchClearItunesData: PropTypes.func,
   iTunesName: PropTypes.string
-};
-
-AlbumCard.propTypes = {
-  artworkUrl100: PropTypes.string,
-  trackName: PropTypes.string,
-  trackExplicitness: PropTypes.string,
-  artistName: PropTypes.string
 };
 
 const mapStateToProps = createStructuredSelector({
