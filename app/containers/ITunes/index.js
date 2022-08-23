@@ -4,21 +4,22 @@
  *
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { injectIntl, FormattedMessage as T } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
 import { Card, Input, Row, Skeleton } from 'antd';
-import { selectITunesData, selectITunesError, selectITunesName } from './selectors';
+import { selectITunesData, selectITunesError, selectITunesName, selectITunesLoading } from './selectors';
 import saga from './saga';
 import styled from 'styled-components';
 import { iTunesCreators } from './reducer';
 import { debounce, isEmpty, get } from 'lodash';
 import If from '@components/If';
 import For from '@components/For';
+import T from '@components/T';
 import { AlbumCard } from './components/AlbumCard';
 
 const { Search } = Input;
@@ -41,27 +42,24 @@ const Container = styled.div`
   }
 `;
 
-export function ITunes({ intl, dispatchGetItunesData, dispatchClearItunesData, iTunesData, iTunesName }) {
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const loaded = get(iTunesData, 'results', null);
-    if (loaded) {
-      setLoading(false);
-    }
-  }, [iTunesData]);
-
+export function ITunes({
+  intl,
+  dispatchGetItunesData,
+  dispatchClearItunesData,
+  iTunesData,
+  iTunesName,
+  iTunesError,
+  loading
+}) {
   useEffect(() => {
     if (iTunesName && !iTunesData?.results?.length) {
       dispatchGetItunesData(iTunesName);
-      setLoading(true);
     }
   }, []);
 
   const handleOnChange = (name) => {
     if (!isEmpty(name)) {
       dispatchGetItunesData(name);
-      setLoading(true);
     } else {
       dispatchClearItunesData();
     }
@@ -79,6 +77,25 @@ export function ITunes({ intl, dispatchGetItunesData, dispatchClearItunesData, i
       </If>
     );
   };
+  const renderError = () => {
+    let iTuneError;
+    if (iTunesError) {
+      iTuneError = iTunesError;
+    } else if (isEmpty(iTunesName)) {
+      iTuneError = 'album_search_default';
+    }
+
+    return (
+      !loading &&
+      iTuneError && (
+        <CustomCard title={intl.formatMessage({ id: 'album_list' })}>
+          <If condition={iTunesError} otherwise={<T data-testid="default-message" id={iTuneError} />}>
+            <T data-testid="error-message" id={iTunesError} />
+          </If>
+        </CustomCard>
+      )
+    );
+  };
   return (
     <Container maxwidth="700" padding="10">
       <CustomCard title={intl.formatMessage({ id: 'album_search' })}>
@@ -92,22 +109,26 @@ export function ITunes({ intl, dispatchGetItunesData, dispatchClearItunesData, i
         />
       </CustomCard>
       {renderList(iTunesData)}
+      {renderError()}
     </Container>
   );
 }
 
 ITunes.propTypes = {
-  intl: PropTypes.Object,
+  intl: PropTypes.object,
   dispatchGetItunesData: PropTypes.func,
   iTunesData: PropTypes.any,
   dispatchClearItunesData: PropTypes.func,
-  iTunesName: PropTypes.string
+  iTunesName: PropTypes.string,
+  iTunesError: PropTypes.string,
+  loading: PropTypes.bool
 };
 
 const mapStateToProps = createStructuredSelector({
   iTunesData: selectITunesData(),
   iTunesName: selectITunesName(),
-  iTunesError: selectITunesError()
+  iTunesError: selectITunesError(),
+  loading: selectITunesLoading()
 });
 
 export function mapDispatchToProps(dispatch) {

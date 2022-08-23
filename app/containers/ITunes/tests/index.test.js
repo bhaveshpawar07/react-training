@@ -11,6 +11,7 @@ import { renderProvider, timeout } from '@utils/testUtils';
 import { ITunesTest as ITunes } from '../index';
 import { iTunesTypes } from '../reducer';
 import { mapDispatchToProps } from '@app/containers/ITunes/index';
+import { translate } from '@app/components/IntlGlobalProvider';
 
 describe('<ITunes /> container tests', () => {
   let submitSpy;
@@ -104,9 +105,15 @@ describe('<ITunes /> container tests', () => {
   });
   it('should render Skeleton when loading is true', async () => {
     const iTunesName = 'test';
-    const { getByTestId, baseElement } = renderProvider(<ITunes dispatchGetItunesData={submitSpy} />);
+    const { getByTestId, baseElement } = renderProvider(<ITunes dispatchGetItunesData={submitSpy} loading={true} />);
     fireEvent.change(getByTestId('search-bar'), { target: { value: iTunesName } });
     await timeout(500);
     expect(baseElement.getElementsByClassName('ant-skeleton').length).toBe(1);
+  });
+  it('should render error message, when api returns some error', () => {
+    const iTunesError = translate('something_went_wrong');
+    const { getByTestId } = renderProvider(<ITunes iTunesError={iTunesError} />);
+    // expect(getByTestId('error-message').textContent).toBe(iTunesError);
+    expect(getByTestId('error-message')).toHaveTextContent(iTunesError);
   });
 });

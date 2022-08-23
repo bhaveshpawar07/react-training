@@ -14,6 +14,8 @@
   "repository_stars": "Repository stars: {stars}",
   "repo_stars_unavailable": "Repository stars are unavaiable",
   "wednesday_solutions": "Wednesday Solutions",
-  "search_for_album":"Search for any album",
-  "album_search":"iTunes Album Search"
+  "search_for_album": "Search for any album",
+  "album_search": "iTunes Album Search",
+  "album_search_default": "Search for a repository by entering it's name in the search box",
+  "album_list": "Album List"
 }
