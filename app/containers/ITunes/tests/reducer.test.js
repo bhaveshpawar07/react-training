@@ -6,7 +6,7 @@ describe('ITunes reducer tests', () => {
   });
 
   it('should return the updated state when an action of type REQUEST_GET_ITUNES_DATA is dispatched', () => {
-    const expectedResult = { ...initialState, tuneName: 'test' };
+    const expectedResult = { ...initialState, tuneName: 'test', loading: true };
     expect(
       iTunesReducer(initialState, {
         type: iTunesTypes.REQUEST_GET_ITUNES_DATA,
