@@ -2,24 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import T from '@components/T';
 import If from '@components/If';
-import { Col, Image } from 'antd';
+import { Col } from 'antd';
 import styled from 'styled-components';
-const divStyle = {
-  width: '150px',
-  display: 'flex',
-  flexDirection: 'column'
-};
-const pStyle = {
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-  overflow: 'hidden'
-};
-const artistNameStyle = {
-  fontSize: '10px'
-};
-const trackNameStyle = {
-  fontWeight: 'bold'
-};
 const CustomCard = styled(Col)`
   && {
     width: 150px;
@@ -27,7 +11,7 @@ const CustomCard = styled(Col)`
     flex-direction: column;
   }
 `;
-const CustomImg = styled(Image)`
+const CustomImg = styled.img`
   && {
     border-radius: ${(props) => props.borderRadius}px;
   }
@@ -40,12 +24,21 @@ const CustomDiv = styled.div`
     margin-top: 10px;
   }
 `;
+const CustomT = styled(T)`
+  && {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-weight: ${(props) => props.fontWeight};
+    font-size: ${(props) => props.fontSize}px;
+  }
+`;
 export const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistName }) => {
   return (
-    <CustomCard style={divStyle} span={6}>
+    <CustomCard span={6}>
       <CustomImg src={artworkUrl100} borderRadius={20} />
       <CustomDiv>
-        <T text={trackName} style={{ ...trackNameStyle, ...pStyle }} />
+        <CustomT text={trackName} fontWeight={'bold'} />
         <If condition={trackExplicitness === 'explicit'}>
           <CustomImg
             src="https://cdn-icons.flaticon.com/png/512/3097/premium/3097003.png?token=exp=1661161542~hmac=99d22989a8dc8287886e84079bddb458"
@@ -53,7 +46,7 @@ export const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistN
           />
         </If>
       </CustomDiv>
-      <T text={artistName} style={{ ...artistNameStyle, ...pStyle }} />
+      <CustomT text={artistName} fontSize={11} />
     </CustomCard>
   );
 };
