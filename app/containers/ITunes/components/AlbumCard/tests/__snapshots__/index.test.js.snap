@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AlbumCard /> tests should render and match the snapshot 1`] = `
+<body>
+  <div>
+    <div
+      class="ant-col ant-col-6 AlbumCard__CustomCard-sc-1dt213m-0 esQOWV"
+      data-testid="album-card"
+    >
+      <img
+        class="AlbumCard__CustomImg-sc-1dt213m-1 TtZjZ"
+      />
+      <div
+        class="AlbumCard__CustomDiv-sc-1dt213m-2 kfUBxP"
+      >
+        <p
+          class="T__StyledText-gjlic1-0 kYcyRq AlbumCard__CustomT-sc-1dt213m-3 juzsws"
+          data-testid="track-name"
+          font-weight="bold"
+        />
+      </div>
+      <p
+        class="T__StyledText-gjlic1-0 kYcyRq AlbumCard__CustomT-sc-1dt213m-3 fcSgZZ"
+        data-testid="artist-name"
+        font-size="11"
+      />
+    </div>
+  </div>
+</body>
+`;

@@ -4,7 +4,7 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
 <body>
   <div>
     <div
-      class="ITunes__Container-fbwjmv-1 iecZPe"
+      class="ITunes__Container-fbwjmv-1 gHdSWk"
     >
       <div
         class="ant-card ant-card-bordered ITunes__CustomCard-fbwjmv-0 TKWGJ"
@@ -18,14 +18,19 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
             <div
               class="ant-card-head-title"
             >
-              Album Search
+              iTunes Album Search
             </div>
           </div>
         </div>
         <div
           class="ant-card-body"
         >
-          Search for any album
+          <p
+            class="T__StyledText-gjlic1-0 iRkoNV"
+            data-testid="t"
+          >
+            Search for any album
+          </p>
           <span
             class="ant-input-group-wrapper ant-input-search"
           >
@@ -68,6 +73,33 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
               </span>
             </span>
           </span>
+        </div>
+      </div>
+      <div
+        class="ant-card ant-card-bordered ITunes__CustomCard-fbwjmv-0 TKWGJ"
+      >
+        <div
+          class="ant-card-head"
+        >
+          <div
+            class="ant-card-head-wrapper"
+          >
+            <div
+              class="ant-card-head-title"
+            >
+              Album List
+            </div>
+          </div>
+        </div>
+        <div
+          class="ant-card-body"
+        >
+          <p
+            class="T__StyledText-gjlic1-0 kYcyRq"
+            data-testid="default-message"
+          >
+            Search for a repository by entering it's name in the search box
+          </p>
         </div>
       </div>
     </div>

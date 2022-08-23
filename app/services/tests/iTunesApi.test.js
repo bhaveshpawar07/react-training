@@ -5,13 +5,13 @@ import { getItunes } from '../iTuneApi';
 describe('iTunesApi test', () => {
   const tuneName = 'test';
 
-  it('should make the api call to "/search?term=${tuneName}&limit=10', async () => {
+  it('should make the api call to "/search?term=${tuneName}&limit=12&entity=song', async () => {
     const mock = new MockAdapter(getApiClient('iTunes').axiosInstance);
     const data = {
       resultCount: 1,
       result: [{ tuneName }]
     };
-    mock.onGet(`/search?term=${tuneName}&limit=10`).reply(200, data);
+    mock.onGet(`/search?term=${tuneName}&limit=12&entity=song`).reply(200, data);
     const res = await getItunes(tuneName);
     expect(res.data).toEqual(data);
   });
