@@ -4,14 +4,14 @@
  *
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
-import { Card, Input, Row, Skeleton } from 'antd';
+import { Card, Input, Row, Skeleton, Progress } from 'antd';
 import { selectITunesData, selectITunesError, selectITunesName, selectITunesLoading } from './selectors';
 import saga from './saga';
 import styled from 'styled-components';
@@ -21,6 +21,7 @@ import If from '@components/If';
 import For from '@components/For';
 import T from '@components/T';
 import { AlbumCard } from './components/AlbumCard';
+import { PlayCircleFilled, PauseCircleFilled } from '@ant-design/icons';
 
 const { Search } = Input;
 const CustomCard = styled(Card)`
@@ -41,7 +42,34 @@ const Container = styled.div`
     padding: ${(props) => props.padding}px;
   }
 `;
-
+const PlayDiv = styled.div`
+  && {
+    background: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 0;
+    width: 690px;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0px 0px 10px 8px #888888;
+  }
+`;
+const PlayAlbumInfo = styled.div`
+  && {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+  }
+`;
+const PlayAlbumControl = styled.div`
+  && {
+    width: 35%;
+    margin-right: 35px;
+  }
+`;
 export function ITunes({
   intl,
   dispatchGetItunesData,
@@ -51,6 +79,14 @@ export function ITunes({
   iTunesError,
   loading
 }) {
+  const [currentSong, setCurrentSong] = useState({
+    songName: '',
+    img: '',
+    previewUrl: '',
+    play: false,
+    pause: true,
+    progress: 0
+  });
   useEffect(() => {
     if (iTunesName && !iTunesData?.results?.length) {
       dispatchGetItunesData(iTunesName);
@@ -65,13 +101,28 @@ export function ITunes({
     }
   };
   const debouncedHandleOnChange = debounce(handleOnChange, 200);
+  const musicPlayer = (index) => {
+    const selectedSong = iTunesData.results[index];
+    const songDetails = {
+      songName: selectedSong.trackName,
+      img: selectedSong.artworkUrl60,
+      previewUrl: selectedSong.previewUrl,
+      play: true,
+      pause: false
+    };
+    setCurrentSong(songDetails);
+  };
   const renderList = (iTunesData) => {
     const items = get(iTunesData, 'results', []);
     return (
       <If condition={!isEmpty(items) || loading}>
         <Skeleton loading={loading} active>
-          <Row gutter={[16, 16]} data-testid="dataRow">
-            <For of={items} noParent renderItem={(item, index) => <AlbumCard key={index} {...item} />} />
+          <Row gutter={[16, 16]} data-testid="dataRow" style={{ marginBottom: '60px' }}>
+            <For
+              of={items}
+              noParent
+              renderItem={(item, index) => <AlbumCard key={index} {...item} index={index} musicPlayer={musicPlayer} />}
+            />
           </Row>
         </Skeleton>
       </If>
@@ -84,7 +135,6 @@ export function ITunes({
     } else if (isEmpty(iTunesName)) {
       iTuneError = 'album_search_default';
     }
-
     return (
       !loading &&
       iTuneError && (
@@ -95,6 +145,55 @@ export function ITunes({
         </CustomCard>
       )
     );
+  };
+  const playSong = () => {
+    let audioRef = useRef('');
+    if (currentSong.songName) {
+      // console.log(audioRef.current.currentTime());
+      return (
+        <PlayDiv>
+          <PlayAlbumInfo>
+            <img src={currentSong.img} />
+            <T text={currentSong.songName} style={{ marginLeft: '10px' }} />
+          </PlayAlbumInfo>
+          <If
+            condition={currentSong.play}
+            otherwise={
+              <PlayCircleFilled
+                style={{ fontSize: '25px' }}
+                onClick={() => {
+                  audioRef.current.play();
+                  setCurrentSong({ ...currentSong, play: true });
+                }}
+              />
+            }
+          >
+            <PauseCircleFilled
+              style={{ fontSize: '25px' }}
+              onClick={() => {
+                audioRef.current.pause();
+                setCurrentSong({ ...currentSong, play: false });
+              }}
+            />
+          </If>
+          <PlayAlbumControl>
+            <Progress percent={currentSong.progress} status="active" size="small" showInfo={false} />
+          </PlayAlbumControl>
+          <audio
+            autoPlay
+            src={currentSong.previewUrl}
+            ref={audioRef}
+            onEnded={() => setCurrentSong({ ...currentSong, play: false, progress: 0 })}
+            onTimeUpdate={() =>
+              setCurrentSong({
+                ...currentSong,
+                progress: (audioRef.current.currentTime / audioRef.current.duration) * 100
+              })
+            }
+          />
+        </PlayDiv>
+      );
+    }
   };
   return (
     <Container maxwidth="700" padding="10">
@@ -110,6 +209,7 @@ export function ITunes({
       </CustomCard>
       {renderList(iTunesData)}
       {renderError()}
+      {playSong()}
     </Container>
   );
 }

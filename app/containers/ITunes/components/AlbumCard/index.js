@@ -33,10 +33,10 @@ const CustomT = styled(T)`
     font-size: ${(props) => props.fontSize}px;
   }
 `;
-export const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistName }) => {
+export const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistName, index, musicPlayer }) => {
   return (
     <CustomCard span={6} data-testid="album-card">
-      <CustomImg src={artworkUrl100} borderRadius={20} />
+      <CustomImg src={artworkUrl100} borderRadius={20} onClick={() => musicPlayer(index)} />
       <CustomDiv>
         <CustomT data-testid="track-name" text={trackName} fontWeight={'bold'} />
         <If condition={trackExplicitness === 'explicit'}>
@@ -55,7 +55,9 @@ AlbumCard.propTypes = {
   artworkUrl100: PropTypes.string,
   trackName: PropTypes.string,
   trackExplicitness: PropTypes.string,
-  artistName: PropTypes.string
+  artistName: PropTypes.string,
+  index: PropTypes.number,
+  musicPlayer: PropTypes.func
 };
 
 export default AlbumCard;
