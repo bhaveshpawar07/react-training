@@ -123,7 +123,7 @@ describe('<ITunes /> container tests', () => {
     expect(getByTestId('dataRow')).toBeInTheDocument();
     expect(getByTestId('album-card')).toBeInTheDocument();
     await timeout(500);
-    fireEvent.click(getByTestId('album-card'));
+    fireEvent.click(getByTestId('album-songImage'));
     expect(getByTestId('playback-control')).toBeInTheDocument();
     expect(getByTestId('playback-songName')).toHaveTextContent(trackName);
   });
@@ -137,7 +137,7 @@ describe('<ITunes /> container tests', () => {
     expect(getByTestId('album-card')).toBeInTheDocument();
 
     await timeout(500);
-    fireEvent.click(getByTestId('album-card'));
+    fireEvent.click(getByTestId('album-songImage'));
 
     expect(getByTestId('playback-control')).toBeInTheDocument();
     expect(getByTestId('pause')).toBeInTheDocument();

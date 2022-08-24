@@ -22,7 +22,7 @@ describe('<AlbumCard /> tests', () => {
     const index = 1;
     const musicPlayer = jest.fn();
     const { getByTestId } = renderProvider(<AlbumCard index={index} musicPlayer={musicPlayer} />);
-    fireEvent.click(getByTestId('album-card'));
+    fireEvent.click(getByTestId('album-songImage'));
     expect(musicPlayer).toBeCalledWith(index);
   });
 });

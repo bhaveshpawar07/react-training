@@ -9,6 +9,7 @@ exports[`<AlbumCard /> tests should render and match the snapshot 1`] = `
     >
       <img
         class="AlbumCard__CustomImg-sc-1dt213m-1 TtZjZ"
+        data-testid="album-songImage"
       />
       <div
         class="AlbumCard__CustomDiv-sc-1dt213m-2 kfUBxP"

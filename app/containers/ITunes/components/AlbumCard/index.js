@@ -35,8 +35,13 @@ const CustomT = styled(T)`
 `;
 export const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistName, index, musicPlayer }) => {
   return (
-    <CustomCard span={6} data-testid="album-card" onClick={() => musicPlayer(index)}>
-      <CustomImg src={artworkUrl100} borderRadius={20} />
+    <CustomCard span={6} data-testid="album-card">
+      <CustomImg
+        src={artworkUrl100}
+        borderRadius={20}
+        data-testid="album-songImage"
+        onClick={() => musicPlayer(index)}
+      />
       <CustomDiv>
         <CustomT data-testid="track-name" text={trackName} fontWeight={'bold'} />
         <If condition={trackExplicitness === 'explicit'}>
