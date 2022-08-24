@@ -38,15 +38,16 @@ const PlayAlbumControl = styled.div`
 const PlayBack = ({ currentSong, setCurrentSong }) => {
   let audioRef = useRef('');
   return (
-    <PlayDiv>
+    <PlayDiv data-testid="playback-control">
       <PlayAlbumInfo>
         <img src={currentSong.img} />
-        <T text={currentSong.songName} style={{ marginLeft: '10px' }} />
+        <T text={currentSong.songName} data-testid="playback-songName" style={{ marginLeft: '10px' }} />
       </PlayAlbumInfo>
       <If
         condition={currentSong.play}
         otherwise={
           <PlayCircleFilled
+            data-testid="play"
             style={{ fontSize: '25px' }}
             onClick={() => {
               audioRef.current.play();
@@ -56,6 +57,7 @@ const PlayBack = ({ currentSong, setCurrentSong }) => {
         }
       >
         <PauseCircleFilled
+          data-testid="pause"
           style={{ fontSize: '25px' }}
           onClick={() => {
             audioRef.current.pause();
@@ -64,10 +66,17 @@ const PlayBack = ({ currentSong, setCurrentSong }) => {
         />
       </If>
       <PlayAlbumControl>
-        <Progress percent={currentSong.progress} status="active" size="small" showInfo={false} />
+        <Progress
+          data-testid="testProgress"
+          percent={currentSong.progress}
+          status="active"
+          size="small"
+          showInfo={false}
+        />
       </PlayAlbumControl>
       <audio
         autoPlay
+        data-testid="audioElement"
         src={currentSong.previewUrl}
         ref={audioRef}
         onEnded={() => setCurrentSong({ ...currentSong, play: false, progress: 0 })}

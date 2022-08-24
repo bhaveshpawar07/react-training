@@ -116,4 +116,43 @@ describe('<ITunes /> container tests', () => {
     // expect(getByTestId('error-message').textContent).toBe(iTunesError);
     expect(getByTestId('error-message')).toHaveTextContent(iTunesError);
   });
+  it('should show music playback after a album is clicked for the same album', async () => {
+    const trackName = 'test';
+    const iTunesData = { results: [{ trackName: trackName }] };
+    const { getByTestId } = renderProvider(<ITunes iTunesData={iTunesData} dispatchGetItunesData={submitSpy} />);
+    expect(getByTestId('dataRow')).toBeInTheDocument();
+    expect(getByTestId('album-card')).toBeInTheDocument();
+    await timeout(500);
+    fireEvent.click(getByTestId('album-card'));
+    expect(getByTestId('playback-control')).toBeInTheDocument();
+    expect(getByTestId('playback-songName')).toHaveTextContent(trackName);
+  });
+
+  it('should show play button when pause is clicked and pause button when play is clicked', async () => {
+    const trackName = 'test';
+    const iTunesData = { results: [{ trackName: trackName }] };
+    const { getByTestId } = renderProvider(<ITunes iTunesData={iTunesData} dispatchGetItunesData={submitSpy} />);
+
+    expect(getByTestId('dataRow')).toBeInTheDocument();
+    expect(getByTestId('album-card')).toBeInTheDocument();
+
+    await timeout(500);
+    fireEvent.click(getByTestId('album-card'));
+
+    expect(getByTestId('playback-control')).toBeInTheDocument();
+    expect(getByTestId('pause')).toBeInTheDocument();
+
+    fireEvent.click(getByTestId('pause'));
+
+    expect(getByTestId('play')).toBeInTheDocument();
+
+    fireEvent.click(getByTestId('play'));
+
+    expect(getByTestId('pause')).toBeInTheDocument();
+
+    expect(getByTestId('pause')).toBeInTheDocument();
+    const audioElement = getByTestId('audioElement');
+    audioElement.dispatchEvent(new Event('ended'));
+    expect(getByTestId('play')).toBeInTheDocument();
+  });
 });
