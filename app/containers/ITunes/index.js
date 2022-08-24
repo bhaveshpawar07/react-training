@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -21,6 +21,7 @@ import If from '@components/If';
 import For from '@components/For';
 import T from '@components/T';
 import { AlbumCard } from './components/AlbumCard';
+import PlayBack from './components/PlayBack/index';
 
 const { Search } = Input;
 const CustomCard = styled(Card)`
@@ -41,7 +42,6 @@ const Container = styled.div`
     padding: ${(props) => props.padding}px;
   }
 `;
-
 export function ITunes({
   intl,
   dispatchGetItunesData,
@@ -51,6 +51,14 @@ export function ITunes({
   iTunesError,
   loading
 }) {
+  const [currentSong, setCurrentSong] = useState({
+    songName: '',
+    img: '',
+    previewUrl: '',
+    play: false,
+    pause: true,
+    progress: 0
+  });
   useEffect(() => {
     if (iTunesName && !iTunesData?.results?.length) {
       dispatchGetItunesData(iTunesName);
@@ -65,13 +73,28 @@ export function ITunes({
     }
   };
   const debouncedHandleOnChange = debounce(handleOnChange, 200);
+  const musicPlayer = (index) => {
+    const selectedSong = iTunesData.results[index];
+    const songDetails = {
+      songName: selectedSong.trackName,
+      img: selectedSong.artworkUrl60,
+      previewUrl: selectedSong.previewUrl,
+      play: true,
+      pause: false
+    };
+    setCurrentSong(songDetails);
+  };
   const renderList = (iTunesData) => {
     const items = get(iTunesData, 'results', []);
     return (
       <If condition={!isEmpty(items) || loading}>
         <Skeleton loading={loading} active>
-          <Row gutter={[16, 16]} data-testid="dataRow">
-            <For of={items} noParent renderItem={(item, index) => <AlbumCard key={index} {...item} />} />
+          <Row gutter={[16, 16]} data-testid="dataRow" style={{ marginBottom: '60px' }}>
+            <For
+              of={items}
+              noParent
+              renderItem={(item, index) => <AlbumCard key={index} {...item} index={index} musicPlayer={musicPlayer} />}
+            />
           </Row>
         </Skeleton>
       </If>
@@ -84,7 +107,6 @@ export function ITunes({
     } else if (isEmpty(iTunesName)) {
       iTuneError = 'album_search_default';
     }
-
     return (
       !loading &&
       iTuneError && (
@@ -110,6 +132,9 @@ export function ITunes({
       </CustomCard>
       {renderList(iTunesData)}
       {renderError()}
+      <If condition={currentSong.songName}>
+        <PlayBack currentSong={currentSong} setCurrentSong={setCurrentSong} />
+      </If>
     </Container>
   );
 }
