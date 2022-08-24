@@ -4,6 +4,7 @@ import T from '@components/T';
 import If from '@components/If';
 import { Col } from 'antd';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 const CustomCard = styled(Col)`
   && {
     width: 150px;
@@ -33,7 +34,13 @@ const CustomT = styled(T)`
     font-size: ${(props) => props.fontSize}px;
   }
 `;
-export const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistName, index, musicPlayer }) => {
+
+export const AlbumCard = ({ trackId, artworkUrl100, trackName, trackExplicitness, artistName, index, musicPlayer }) => {
+  const history = useHistory();
+  const showDetails = (trackId) => {
+    history.push(`/details/${trackId}`);
+    window.location.reload();
+  };
   return (
     <CustomCard span={6} data-testid="album-card">
       <CustomImg
@@ -42,7 +49,7 @@ export const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistN
         data-testid="album-songImage"
         onClick={() => musicPlayer(index)}
       />
-      <CustomDiv>
+      <CustomDiv onClick={() => showDetails(trackId)}>
         <CustomT data-testid="track-name" text={trackName} fontWeight={'bold'} />
         <If condition={trackExplicitness === 'explicit'}>
           <CustomImg
@@ -57,6 +64,7 @@ export const AlbumCard = ({ artworkUrl100, trackName, trackExplicitness, artistN
 };
 
 AlbumCard.propTypes = {
+  trackId: PropTypes.number,
   artworkUrl100: PropTypes.string,
   trackName: PropTypes.string,
   trackExplicitness: PropTypes.string,
