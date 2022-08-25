@@ -13,6 +13,7 @@ exports[`<AlbumCard /> tests should render and match the snapshot 1`] = `
       />
       <div
         class="AlbumCard__CustomDiv-sc-1u39i60-2 fnzPve"
+        data-testid="album-viewDetails"
       >
         <p
           class="T__StyledText-gjlic1-0 kYcyRq AlbumCard__CustomT-sc-1u39i60-3 eERINR"

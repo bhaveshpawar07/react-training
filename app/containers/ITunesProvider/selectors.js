@@ -21,5 +21,3 @@ export const selectSongData = () => createSelector(selectITunesDomain, (substate
 export const selectSongError = () => createSelector(selectITunesDomain, (substate) => get(substate, 'songError'));
 
 export const selectSongId = () => createSelector(selectITunesDomain, (substate) => get(substate, 'songId'));
-
-export const selectLoading = () => createSelector(selectITunesDomain, (substate) => get(substate, 'loading'));

@@ -48,7 +48,7 @@ export const AlbumCard = ({ trackId, artworkUrl100, trackName, trackExplicitness
         data-testid="album-songImage"
         onClick={() => musicPlayer(index)}
       />
-      <CustomDiv onClick={() => showDetails(trackId)}>
+      <CustomDiv data-testid="album-viewDetails" onClick={() => showDetails(trackId)}>
         <CustomT data-testid="track-name" text={trackName} fontWeight={'bold'} />
         <If condition={trackExplicitness === 'explicit'}>
           <CustomImg

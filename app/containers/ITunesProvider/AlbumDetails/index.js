@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
-import { selectITunesData, selectLoading, selectSongData, selectSongError, selectSongId } from '../selectors';
+import { selectITunesData, selectITunesLoading, selectSongData, selectSongError, selectSongId } from '../selectors';
 import saga from '../saga';
 import { useParams } from 'react-router-dom';
 import { iTunesCreators } from '../reducer';
@@ -80,6 +80,7 @@ export function AlbumDetails({
   const { id } = useParams();
   useEffect(() => {
     const getFromStore = iTunesData?.results?.find((song) => song.trackId == id);
+
     if (!getFromStore) {
       dispatchGetSongDetails(id);
     } else {
@@ -135,10 +136,10 @@ const mapStateToProps = createStructuredSelector({
   iTunesData: selectITunesData(),
   songData: selectSongData(),
   songError: selectSongError(),
-  loading: selectLoading()
+  loading: selectITunesLoading()
 });
 
-function mapDispatchToProps(dispatch) {
+export function mapDispatchToProps(dispatch) {
   const { requestGetSongDetails, requestSetSongDetails, clearSongDetails } = iTunesCreators;
   return {
     dispatchGetSongDetails: (songId) => dispatch(requestGetSongDetails(songId)),
