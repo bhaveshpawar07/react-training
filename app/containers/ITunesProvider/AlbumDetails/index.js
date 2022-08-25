@@ -12,10 +12,10 @@ import styled from 'styled-components';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
-import { selectLoading, selectSongData, selectSongError, selectSongId } from './selectors';
-import saga from './saga';
+import { selectITunesData, selectLoading, selectSongData, selectSongError, selectSongId } from '../selectors';
+import saga from '../saga';
 import { useParams } from 'react-router-dom';
-import { albumDetailsCreators } from './reducer';
+import { iTunesCreators } from '../reducer';
 import { Card } from 'antd';
 import T from '@components/T';
 
@@ -70,17 +70,25 @@ const CustomT = styled(T)`
 export function AlbumDetails({
   songId,
   songData,
+  iTunesData,
   songError,
   loading,
   dispatchGetSongDetails,
-  dispatchClearSongDetails
+  dispatchClearSongDetails,
+  dispatchSetSongDetails
 }) {
   const { id } = useParams();
   useEffect(() => {
-    if (songData?.results?.[0]?.trackId != id) {
+    const getFromStore = iTunesData?.results?.find((song) => song.trackId == id);
+    if (!getFromStore) {
       dispatchGetSongDetails(id);
+    } else {
+      songData = {
+        resultCount: 1,
+        results: [getFromStore]
+      };
+      dispatchSetSongDetails(songData);
     }
-
     return () => dispatchClearSongDetails();
   }, []);
   return (
@@ -114,23 +122,27 @@ export function AlbumDetails({
 AlbumDetails.propTypes = {
   songId: PropTypes.any,
   songData: PropTypes.object,
+  iTunesData: PropTypes.object,
   songError: PropTypes.any,
   loading: PropTypes.bool,
   dispatchGetSongDetails: PropTypes.func,
-  dispatchClearSongDetails: PropTypes.func
+  dispatchClearSongDetails: PropTypes.func,
+  dispatchSetSongDetails: PropTypes.func
 };
 
 const mapStateToProps = createStructuredSelector({
   songId: selectSongId(),
+  iTunesData: selectITunesData(),
   songData: selectSongData(),
   songError: selectSongError(),
   loading: selectLoading()
 });
 
 function mapDispatchToProps(dispatch) {
-  const { requestGetSongDetails, clearSongDetails } = albumDetailsCreators;
+  const { requestGetSongDetails, requestSetSongDetails, clearSongDetails } = iTunesCreators;
   return {
     dispatchGetSongDetails: (songId) => dispatch(requestGetSongDetails(songId)),
+    dispatchSetSongDetails: (songDetails) => dispatch(requestSetSongDetails(songDetails)),
     dispatchClearSongDetails: () => dispatch(clearSongDetails())
   };
 }

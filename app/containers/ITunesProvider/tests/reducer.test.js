@@ -1,4 +1,4 @@
-import { iTunesReducer, iTunesTypes, initialState } from '../reducer';
+import iTunesReducer, { iTunesTypes, initialState } from '../reducer';
 
 describe('ITunes reducer tests', () => {
   it('should return the initial state by default', () => {

@@ -13,7 +13,7 @@ describe('ITunes selector tests', () => {
     tuneError = 'There was some error while fetching the album details';
 
     mockedState = {
-      iTunes: {
+      iTunesProviderReducer: {
         tuneName,
         tuneData,
         tuneError

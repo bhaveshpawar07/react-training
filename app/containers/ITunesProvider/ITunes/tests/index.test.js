@@ -9,8 +9,8 @@ import React from 'react';
 import { fireEvent } from '@testing-library/dom';
 import { renderProvider, timeout } from '@utils/testUtils';
 import { ITunesTest as ITunes } from '../index';
-import { iTunesTypes } from '../reducer';
-import { mapDispatchToProps } from '@app/containers/ITunes/index';
+import { iTunesTypes } from '../../reducer';
+import { mapDispatchToProps } from '@app/containers/ITunesProvider/ITunes/index';
 import { translate } from '@app/components/IntlGlobalProvider';
 
 describe('<ITunes /> container tests', () => {

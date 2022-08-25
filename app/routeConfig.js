@@ -1,8 +1,8 @@
 import NotFound from '@containers/NotFoundPage/Loadable';
 import HomeContainer from '@containers/HomeContainer/Loadable';
 import routeConstants from '@utils/routeConstants';
-import ITunes from '@containers/ITunes/Loadable';
-import AlbumDetails from '@containers/AlbumDetails/Loadable';
+import ITunes from '@app/containers/ITunesProvider/ITunes/Loadable';
+import AlbumDetails from '@app/containers/ITunesProvider/AlbumDetails/Loadable';
 export const routeConfig = {
   iTunes: {
     component: ITunes,

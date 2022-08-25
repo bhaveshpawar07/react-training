@@ -39,7 +39,6 @@ export const AlbumCard = ({ trackId, artworkUrl100, trackName, trackExplicitness
   const history = useHistory();
   const showDetails = (trackId) => {
     history.push(`/details/${trackId}`);
-    window.location.reload();
   };
   return (
     <CustomCard span={6} data-testid="album-card">
