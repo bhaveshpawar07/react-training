@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -18,6 +18,9 @@ import { useParams } from 'react-router-dom';
 import { iTunesCreators } from '../reducer';
 import { Card } from 'antd';
 import T from '@components/T';
+import PlayBack from '../ITunes/components/PlayBack/index';
+import If from '@components/If';
+import { PlayCircleFilled } from '@ant-design/icons';
 
 const Container = styled.div`
   && {
@@ -78,44 +81,56 @@ export function AlbumDetails({
   dispatchSetSongDetails
 }) {
   const { id } = useParams();
+  const [currentSong, setCurrentSong] = useState({
+    songName: '',
+    img: '',
+    previewUrl: '',
+    play: false,
+    pause: true,
+    progress: 0
+  });
   useEffect(() => {
     const getFromStore = iTunesData?.results?.find((song) => song.trackId == id);
 
-    if (!getFromStore) {
-      dispatchGetSongDetails(id);
-    } else {
-      songData = {
-        resultCount: 1,
-        results: [getFromStore]
-      };
-      dispatchSetSongDetails(songData);
-    }
+    !getFromStore ? dispatchGetSongDetails(id) : dispatchSetSongDetails(getFromStore);
+
     return () => dispatchClearSongDetails();
   }, []);
+  const playSong = () => {
+    const songDetails = {
+      songName: songData?.trackName,
+      img: songData?.artworkUrl60,
+      previewUrl: songData?.previewUrl,
+      play: true,
+      pause: false
+    };
+    setCurrentSong(songDetails);
+  };
   return (
     <Container maxwidth="700" padding="10">
       <CustomCard>
         <CustomDiv maxwidth="300">
-          <CustomImg borderRadius={10} src={songData?.results?.[0]?.artworkUrl100} />
+          <CustomImg borderRadius={10} src={songData?.artworkUrl100} />
           <SongDetailsDiv>
+            <CustomT title={`Track Name: ${songData?.trackName}`} text={songData?.trackName} fontSize={20} />
+            <CustomT title={`Artist Name: ${songData?.artistName}`} text={songData?.artistName} fontSize={14} />
             <CustomT
-              title={`Track Name: ${songData?.results?.[0]?.trackName}`}
-              text={songData?.results?.[0]?.trackName}
-              fontSize={20}
-            />
-            <CustomT
-              title={`Artist Name: ${songData?.results?.[0]?.artistName}`}
-              text={songData?.results?.[0]?.artistName}
-              fontSize={14}
-            />
-            <CustomT
-              title={`Collection Name: ${songData?.results?.[0]?.collectionCensoredName}`}
-              text={songData?.results?.[0]?.collectionCensoredName}
+              title={`Collection Name: ${songData?.collectionCensoredName}`}
+              text={songData?.collectionCensoredName}
               fontSize={12}
+            />
+            <PlayCircleFilled
+              data-testid="play-song"
+              style={{ fontSize: '20px' }}
+              onClick={() => playSong()}
+              title={`Listen: ${songData?.trackName}`}
             />
           </SongDetailsDiv>
         </CustomDiv>
       </CustomCard>
+      <If condition={currentSong.songName}>
+        <PlayBack currentSong={currentSong} setCurrentSong={setCurrentSong} />
+      </If>
     </Container>
   );
 }
