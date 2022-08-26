@@ -7,7 +7,7 @@
 
 import React from 'react';
 
-// import { fireEvent } from '@testing-library/dom';
+import { fireEvent } from '@testing-library/dom';
 import { renderProvider, timeout } from '@utils/testUtils';
 import { iTunesTypes } from '../../reducer';
 import { AlbumDetailsTest as AlbumDetails, mapDispatchToProps } from '../index';
@@ -40,6 +40,20 @@ describe('<AlbumDetails /> container tests', () => {
     expect(submitSpy).toBeCalled;
   });
 
+  it('should show playback control for the current song when play button is clicked', async () => {
+    const songDetails = { trackName: 'test' };
+    const { getByTestId } = renderProvider(
+      <AlbumDetails
+        dispatchGetSongDetails={submitSpy}
+        dispatchSetSongDetails={submitSpy}
+        iTunesData={songDetails}
+        songData={songDetails}
+      />
+    );
+    await timeout(500);
+    fireEvent.click(getByTestId('play-song'));
+    expect(getByTestId('playback-control')).toBeInTheDocument();
+  });
   it('should validate mapDispatchToProps actions', async () => {
     const dispatchItunesSearchSpy = jest.fn();
     const songId = 'test';

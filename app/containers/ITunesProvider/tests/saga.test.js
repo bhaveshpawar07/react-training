@@ -74,12 +74,12 @@ describe('ITunes saga tests', () => {
     expect(res).toEqual(call(getSongDetails, songId));
     const response = {
       resultCount: 1,
-      result: [{ tuneName }]
+      results: [{ tuneName }]
     };
     expect(getSongDetailsDataGenerator.next(apiResponseGenerator(true, response)).value).toEqual(
       put({
         type: iTunesTypes.SUCCESS_GET_SONG_DETAILS,
-        songData: response
+        songData: response.results[0]
       })
     );
   });
