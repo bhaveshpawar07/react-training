@@ -21,6 +21,13 @@ describe('<AlbumCard /> tests', () => {
     expect(getByTestId('track-name')).toHaveTextContent(trackName);
     expect(getByTestId('artist-name')).toHaveTextContent(artistName);
   });
+  it('should render explicit svg if the track is explicit', () => {
+    const trackName = 'test';
+    const trackExplicitness = 'explicit';
+    const { getByTestId } = renderWithIntl(<AlbumCard trackName={trackName} trackExplicitness={trackExplicitness} />);
+    expect(getByTestId('track-name')).toHaveTextContent(trackName);
+    expect(getByTestId('explicit-svg')).toBeInTheDocument;
+  });
   it('should call musicPlayer with proper index after a album is clicked', () => {
     const index = 1;
     const musicPlayer = jest.fn();
