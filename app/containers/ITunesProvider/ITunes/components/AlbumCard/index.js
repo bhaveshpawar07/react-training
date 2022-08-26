@@ -36,16 +36,23 @@ const CustomT = styled(T)`
     font-size: ${(props) => props.fontSize}px;
   }
 `;
+const CustSvg = styled.svg`
+  && {
+    width: 20px;
+    height: 20px;
+    background: black;
+  }
+`;
 const ESvg = () => (
-  <svg width="25px" height="25px" viewBox="0 0 76 76">
+  <CustSvg viewBox="0 0 76 76">
     <path
-      fill="#000000"
+      fill="#ffffff"
       fillOpacity="1"
       strokeWidth="0.2"
       strokeLinejoin="round"
       d="M 49.3103,53.8333L 29.8036,53.8333L 29.8036,21.3222L 48.3814,21.3222L 48.3814,27.36L 37.2347,27.36L 37.2347,34.3262L 47.9169,34.3262L 47.9169,40.3644L 37.2347,40.3644L 37.2347,47.7956L 49.3103,47.7956L 49.3103,53.8333 Z "
     />
-  </svg>
+  </CustSvg>
 );
 const EIcon = (props) => <Icon data-testId="explicit-svg" component={ESvg} {...props} />;
 export const AlbumCard = ({ trackId, artworkUrl100, trackName, trackExplicitness, artistName, index, musicPlayer }) => {
