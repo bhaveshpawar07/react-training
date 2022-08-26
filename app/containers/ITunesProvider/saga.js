@@ -19,7 +19,7 @@ export function* getDetails(action) {
   const response = yield call(getSongDetails, action.songId);
   const { ok, data } = response;
   if (ok) {
-    yield put(successGetSongDetails(data));
+    yield put(successGetSongDetails(data.results[0]));
   } else {
     yield put(failureGetSongDetails(data));
   }
