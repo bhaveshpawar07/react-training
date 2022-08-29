@@ -4,11 +4,11 @@ exports[`<PlayBack /> tests should render and match the snapshot 1`] = `
 <body>
   <div>
     <div
-      class="PlayBack__PlayDiv-sc-1aq47kd-0 htHHdB"
+      class="PlayBack__PlayDiv-sc-170akw8-0 fxiFyP"
       data-testid="playback-control"
     >
       <div
-        class="PlayBack__PlayAlbumInfo-sc-1aq47kd-1 gPVtut"
+        class="PlayBack__PlayAlbumInfo-sc-170akw8-1 kHcacf"
       >
         <img
           src="test"
@@ -44,7 +44,7 @@ exports[`<PlayBack /> tests should render and match the snapshot 1`] = `
         </svg>
       </span>
       <div
-        class="PlayBack__PlayAlbumControl-sc-1aq47kd-2 jkHMCu"
+        class="PlayBack__PlayAlbumControl-sc-170akw8-2 XTwXg"
       >
         <div
           class="ant-progress ant-progress-line ant-progress-status-active ant-progress-small"

@@ -1,6 +1,7 @@
 name: AWS S3 Static Site Deploy
 on:
   pull_request:
+  push:
     branches: [master]
 jobs:
   aws_deply:
@@ -10,7 +11,7 @@ jobs:
       matrix:
         node-version: [16.x]
     env:
-      AWS_S3_BUCKET: wednesday-react-template
+      AWS_S3_BUCKET: bhavesh-react-template
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION }}

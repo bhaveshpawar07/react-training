@@ -12,16 +12,17 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { injectSaga } from 'redux-injectors';
 import { Card, Input, Row, Skeleton } from 'antd';
-import { selectITunesData, selectITunesError, selectITunesName, selectITunesLoading } from './selectors';
-import saga from './saga';
+import { selectITunesData, selectITunesError, selectITunesName, selectITunesLoading } from '../selectors';
+import saga from '../saga';
 import styled from 'styled-components';
-import { iTunesCreators } from './reducer';
+
 import { debounce, isEmpty, get } from 'lodash';
 import If from '@components/If';
 import For from '@components/For';
 import T from '@components/T';
 import { AlbumCard } from './components/AlbumCard';
 import PlayBack from './components/PlayBack/index';
+import { iTunesCreators } from '../reducer';
 
 const { Search } = Input;
 const CustomCard = styled(Card)`

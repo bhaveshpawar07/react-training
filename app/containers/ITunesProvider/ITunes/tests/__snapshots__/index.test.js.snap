@@ -4,10 +4,10 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
 <body>
   <div>
     <div
-      class="ITunes__Container-fbwjmv-1 gHdSWk"
+      class="ITunes__Container-sc-13q8fdj-1 iUcIFk"
     >
       <div
-        class="ant-card ant-card-bordered ITunes__CustomCard-fbwjmv-0 TKWGJ"
+        class="ant-card ant-card-bordered ITunes__CustomCard-sc-13q8fdj-0 dMdzpd"
       >
         <div
           class="ant-card-head"
@@ -76,7 +76,7 @@ exports[`<ITunes /> container tests should render and match the snapshot 1`] = `
         </div>
       </div>
       <div
-        class="ant-card ant-card-bordered ITunes__CustomCard-fbwjmv-0 TKWGJ"
+        class="ant-card ant-card-bordered ITunes__CustomCard-sc-13q8fdj-0 dMdzpd"
       >
         <div
           class="ant-card-head"

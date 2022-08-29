@@ -4,24 +4,25 @@ exports[`<AlbumCard /> tests should render and match the snapshot 1`] = `
 <body>
   <div>
     <div
-      class="ant-col ant-col-6 AlbumCard__CustomCard-sc-1dt213m-0 esQOWV"
+      class="ant-col ant-col-6 AlbumCard__CustomCard-sc-1u39i60-0 nKPfE"
       data-testid="album-card"
     >
       <img
-        class="AlbumCard__CustomImg-sc-1dt213m-1 TtZjZ"
+        class="AlbumCard__CustomImg-sc-1u39i60-1 cRwCbw"
         data-testid="album-songImage"
       />
       <div
-        class="AlbumCard__CustomDiv-sc-1dt213m-2 kfUBxP"
+        class="AlbumCard__CustomDiv-sc-1u39i60-2 fnzPve"
+        data-testid="album-viewDetails"
       >
         <p
-          class="T__StyledText-gjlic1-0 kYcyRq AlbumCard__CustomT-sc-1dt213m-3 juzsws"
+          class="T__StyledText-gjlic1-0 kYcyRq AlbumCard__CustomT-sc-1u39i60-3 eERINR"
           data-testid="track-name"
           font-weight="bold"
         />
       </div>
       <p
-        class="T__StyledText-gjlic1-0 kYcyRq AlbumCard__CustomT-sc-1dt213m-3 fcSgZZ"
+        class="T__StyledText-gjlic1-0 kYcyRq AlbumCard__CustomT-sc-1u39i60-3 iMnshM"
         data-testid="artist-name"
         font-size="11"
       />
